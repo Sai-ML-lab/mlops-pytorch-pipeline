@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: serving
-          image: mlops-serve:v1
+          image: mlops-serve:v2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
