@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1
+
+FROM python:3.11-slim AS base
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+COPY requirements/train.txt /app/requirements/train.txt
+RUN pip install --upgrade pip && pip install -r /app/requirements/train.txt
+
+FROM base AS training
+
+WORKDIR /app
+COPY src/ /app/src/
+COPY configs/ /app/configs/
+
+RUN mkdir -p /app/data /app/checkpoints
+
+ENV TRAINING_CONFIG_PATH=/app/configs/training_config.yaml
+
+ENTRYPOINT ["python", "src/train.py"]
