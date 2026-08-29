@@ -10,7 +10,7 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from PIL import Image
 from torchvision import transforms
 
-from model import get_model
+from src.model import get_model
 
 CHECKPOINT_PATH = Path(
     os.environ.get("MODEL_CHECKPOINT", "/app/checkpoints/classifier_v1.pt")

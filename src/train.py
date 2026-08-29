@@ -111,7 +111,13 @@ def main() -> None:
     seed = int(config["training"].get("seed", 42))
     set_seed(seed)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    elif torch.backends.mps.is_available():
+        device = torch.device("mps")
+    else:
+        device = torch.device("cpu")
+
     print(
         json.dumps({"event": "training_started", "device": str(device), "config": str(config_path)}),
         flush=True,
@@ -123,10 +129,11 @@ def main() -> None:
     ).to(device)
 
     train_loader, val_loader = get_dataloaders(
-        data_dir=config["dataset"]["data_dir"],
-        batch_size=int(config["training"]["batch_size"]),
-        num_workers=int(config["training"].get("num_workers", 2)),
-    )
+    data_dir=config["dataset"]["data_dir"],
+    batch_size=int(config["training"]["batch_size"]),
+    num_workers=int(config["training"].get("num_workers", 2)),
+    pin_memory=bool(config["training"].get("pin_memory", False)),
+)
 
     optimizer = torch.optim.Adam(
         model.parameters(),
