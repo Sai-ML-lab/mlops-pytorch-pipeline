@@ -34,7 +34,8 @@ def get_dataloaders(
     data_dir: str,
     batch_size: int = 64,
     num_workers: int = 2,
-) -> Tuple[DataLoader, DataLoader]:
+    pin_memory: bool = False,
+) -> Tuple[DataLoader, DataLoader]: 
     """Download/use CIFAR-10 and return training/validation loaders."""
     train_dataset = datasets.CIFAR10(
         root=data_dir,
@@ -54,14 +55,14 @@ def get_dataloaders(
         batch_size=batch_size,
         shuffle=True,
         num_workers=num_workers,
-        pin_memory=True,
+        pin_memory=pin_memory,
     )
     val_loader = DataLoader(
         val_dataset,
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers,
-        pin_memory=True,
+        pin_memory=pin_memory,
     )
 
     return train_loader, val_loader
