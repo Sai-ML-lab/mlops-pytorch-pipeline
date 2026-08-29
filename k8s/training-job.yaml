@@ -15,7 +15,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: trainer
-          image: mlops-train:v1
+          image: mlops-train:v2
           imagePullPolicy: IfNotPresent
           env:
             - name: TRAINING_CONFIG_PATH
